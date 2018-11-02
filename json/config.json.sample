@@ -1,0 +1,8 @@
+{
+    "prefix" : "*",
+    "token" : "BOT TOKEN HERE",
+    "server_id": "YOUR SERVER ID HERE",
+    "instance_owner": "YOUR USER ID HERE",
+    "accept_all_instances": false,
+    "default_language": "en"
+}
