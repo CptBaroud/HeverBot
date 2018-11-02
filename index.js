@@ -60,12 +60,47 @@ client.on('message', message => {
 
 client.on('messageReactionAdd', (reaction, message, args, client) =>
 {
-
+   //client.channels.get('503667249660559380').send("Entrée l'id du joeur");
 });
+
+const events = {
+    MESSAGE_REACTION_ADD: 'messageReactionAdd',
+    MESSAGE_REACTION_REMOVE: 'messageReactionRemove',
+};
+
+client.on('raw', async event => {
+    if (!events.hasOwnProperty(event.t)) return;
+
+    const { d: data } = event;
+    const user = client.users.get(data.user_id);
+    //console.log(user);
+    const channel = client.channels.get(data.channel_id) || await user.createDM();
+
+    if (channel.messages.has(data.message_id)) return;
+
+    const message = await channel.fetchMessage(data.message_id);
+    console.log(message);
+    const joueur = await channel.fetchMessage(data.message_embeds_MessageEmbed_description);
+    const emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
+    let reaction = message.reactions.get(emojiKey);
+
+    if (!reaction) {
+        const emoji = new Discord.Emoji(client.guilds.get(data.guild_id), data.emoji);
+        reaction = new Discord.MessageReaction(message, emoji, 1, data.user_id === client.user.id);
+    }
+
+    client.emit(events[event.t], reaction, user);
+});
+
+client.on('messageReactionAdd', (reaction, user) => {
+    console.log(`${user.username} reacted with "${reaction.emoji.name}".`);
+    console.log(reaction.message.mentions.users.first());
+});
+
 
 client.on('ready', () => {
     try {
-        client.users.get(config.instance_owner).send("*cron init");
+        //client.users.get(config.instance_owner).send("*cron init");
     }
     catch (e) {
         return Log.warning("Valid property \"instance_owner\" must be given in", "json/config.json");
