@@ -11,14 +11,6 @@ module.exports = {
         const grade = parse[2];
         const id = message.author.id;
 
-        Log.success(parse[1]);
-        Log.success(parse[2]);
-
-        var save = {};
-        save.item = "string";
-        save = JSON.stringify(save);
-        fs.writeFile("path", save, 'utf8');
-
         const Rappel = new Discord.RichEmbed();
         Rappel.setTitle("Demande de grade ");
         Rappel.setAuthor("Staff HVM");
@@ -32,7 +24,7 @@ module.exports = {
         client.channels.get('503667249660559380').send(Rappel);
 
         const Reponse = new Discord.RichEmbed();
-        Reponse.setTitle("Demande Prise en compte");
+        Reponse.setTitle("Ta demande à été Prise en compte");
         Reponse.setDescription("Demande du grade "+grade);
         Reponse.setAuthor(pseudoD, iconD);
         Reponse.setColor('2ecc71');
