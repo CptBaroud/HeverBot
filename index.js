@@ -18,13 +18,13 @@ global.File = Load.module("file");
 global.Command = Load.module("command");
 
 client.on('message', message => {
-    if (!config.accept_all_instances && config.instance_owner != message.author.id)
+    if (!config.accept_all_instances && config.instance_owner !== message.author.id)
         return;
     if (typeof config.prefix === "string" && !message.content.startsWith(config.prefix))
         return;
     else
         var prefix = config.prefix;
-    if (typeof config.prefix == "object" && config.prefix != null) {
+    if (typeof config.prefix === "object" && config.prefix != null) {
         let kill = true;
         for (pfx of config.prefix) {
             if (message.content.startsWith(pfx)) {
@@ -42,9 +42,9 @@ client.on('message', message => {
     const commandName = args.shift().toLowerCase();
 
     let res = Command.call(commandName, args);
-    if (res == 3)
+    if (res === 3)
         Msg.error("lng:denied permission");
-    else if (res == 2)
+    else if (res === 2)
         Msg.error("Commande \"" + commandName + "\" non trouvee");
 
 });
@@ -56,7 +56,5 @@ client.on('messageReactionAdd', (reaction, message, args, client) => {
 client.on('ready', () => {
     Log.success("Pret a servir !", client.readyAt);
 });
-
-
 
 client.login(config.token);
